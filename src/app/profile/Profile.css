@@ -1,0 +1,110 @@
+.summary{
+    width: 50%;
+    margin-top: 100px;
+
+}
+
+.summary-error{
+    height: 100vh;
+    padding: 30px;
+}
+
+@media (max-width: 600px) {
+    .summary {
+        width: 80%;
+        margin-top: 50px;
+    }
+}
+.section-container{
+    margin-bottom: 50px;
+}
+
+.names{
+    margin-top: 0px;
+}
+
+.profile-pic-container {
+    position: relative; /* This makes it a positioning context for absolute children */
+    height: 120px; /* Adjust based on your image size */
+}
+.profile-pic{
+    height: 100px;
+    width: 100px;
+    border-radius: 50%; /* this makes the image round */
+    object-fit: cover;
+    margin-right: -20px; /* negative margin to overlap */
+}
+
+.your-pic {
+    z-index: 3; /* higher z-index, appears on top */
+    position:inherit;
+}
+
+.their-pic {
+    z-index: 1; /* lower z-index, appears behind */
+    position: inherit;
+}
+
+.following-since{
+    color: #D0D3D4;
+}
+
+.channel-container{
+    display: flex;
+    flex-direction: row; /* Aligns all .channel-item elements side by side */
+    flex-wrap: wrap; 
+}
+
+.channel-item {
+    display: flex;
+    flex-direction: row; /* Explicitly set to row to ensure side-by-side alignment */
+    align-items: center; /* Aligns children vertically in the middle */
+    margin-right: 20px;
+    margin-bottom: 10px;
+    gap: 5px; /* Adds space between the image and the text */
+}
+
+.channel-pic{
+    height: 30px;
+    width: auto;
+    border-radius: 50%; /* this makes the image round */
+    object-fit: cover;
+    vertical-align: middle; /* Aligns the image vertically in the middle */
+}
+
+/* Add CSS for the channel name text element */
+.channel-name {
+    color: #D0D3D4;
+    vertical-align: middle; /* Aligns the text vertically in the middle */
+    margin-left: 10px; /* Adds space between the image and the text */
+}
+
+.farcaster-embed-container {
+    border-radius: 10px;
+    color: white;
+    background-color: #403a47;
+    border: 1px solid black;
+  }
+
+.farcaster-embed-stats{
+    color: white;
+}
+
+.cast-embed-item {
+    width: 80%; /* Reduced width */
+    margin: 30px auto; /* Centering the item */
+}
+
+@media (max-width: 600px) {
+    .cast-embed-item {
+        width: 100%; /* Full width on mobile */
+    }
+}
+.farcaster-embed-stats-link{
+    color: #D0D3D4;
+}
+
+.farcaster-embed-url-link{
+    color: #D0D3D4;
+}
+
