@@ -162,7 +162,7 @@ function Profile() {
         {/* <div className="following-since">{followingSince2 ? `${theirUsername} following you since ` + formatTime(followingSince2) : `${theirUsername} is not following you `}</div> */}
       </div>
       <div className="section-container">
-        <h2>Channels you're both in</h2>
+        <h2 className="section-title">Channels you're both in</h2>
         <div className='channel-container'>
             {commonChannels.map(channel => (
             <a href={channel.url} className='channel-item' key={channel.name} style={{ textDecoration: 'none', color: 'inherit' }}>
@@ -174,7 +174,7 @@ function Profile() {
         </div>
       </div>
       <div className="section-container">
-        <h2>People you both follow</h2>
+        <h2 className="section-title">People you both follow</h2>
         <div className='channel-container'>
             {commonFollowing.map(profile => (
             <a href={'https://warpcast.com/'+profile.name} className='channel-item' key={profile.name} style={{ textDecoration: 'none', color: 'inherit' }}>
@@ -185,7 +185,7 @@ function Profile() {
         </div>
       </div>
       <div className="section-container">
-        <h2>{theirUsername} casts you liked</h2>
+        <h2 className="section-title">{theirUsername} casts you liked</h2>
         <div className="cast-embed-container">
             {yourLikedCasts.map(cast => (
             <div className='cast-embed-item'>
@@ -195,7 +195,7 @@ function Profile() {
         </div>
       </div>
       <div className="section-container">
-        <h2>Your casts {theirUsername} has liked</h2>
+        <h2 className="section-title">Your casts {theirUsername} has liked</h2>
         <div className="cast-embed-container">
             {theirLikedCasts.map(cast => (
             <div className='cast-embed-item'>
