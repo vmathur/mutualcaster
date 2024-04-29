@@ -9,10 +9,6 @@ function Home() {
   const router = useRouter();
   const [yourUsername, setYourUsername] = useState('');
   const [theirUsername, setTheirUsername] = useState('');
-  
-  const handleGoClick = () => {
-    router.push(`/profile?username1=${yourUsername}&username2=${theirUsername}`);
-  };
 
   return (
     <div className="App">

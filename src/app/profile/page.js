@@ -2,7 +2,7 @@
 import { FarcasterEmbed } from "react-farcaster-embed/dist/client";
 import "react-farcaster-embed/dist/styles.css";
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation'
 import './Profile.css';
 import '../App.css';
@@ -150,73 +150,77 @@ function Profile() {
   }
 
   return (
-    <div className='App'>
-    <div className='summary'>
-      <div className="section-container">
-        <div className='profile-pic-container'>
-            <img className='profile-pic your-pic' src={yourProfilePic} alt="Your Profile" />
-            <img className='profile-pic their-pic' src={theirProfilePic} alt="Their Profile" />
+    <Suspense>
+      <div className='App'>
+      <div className='summary'>
+        <div className="section-container">
+          <div className='profile-pic-container'>
+              <img className='profile-pic your-pic' src={yourProfilePic} alt="Your Profile" />
+              <img className='profile-pic their-pic' src={theirProfilePic} alt="Their Profile" />
+          </div>
+          <h1 className="names">{theirUsername} and you</h1>
+          <div className="following-since">{followingSince1 ? 'Following since ' + formatTime(followingSince1) : 'Not following'}</div>
+          {/* <div className="following-since">{followingSince2 ? `${theirUsername} following you since ` + formatTime(followingSince2) : `${theirUsername} is not following you `}</div> */}
         </div>
-        <h1 className="names">{theirUsername} and you</h1>
-        <div className="following-since">{followingSince1 ? 'Following since ' + formatTime(followingSince1) : 'Not following'}</div>
-        {/* <div className="following-since">{followingSince2 ? `${theirUsername} following you since ` + formatTime(followingSince2) : `${theirUsername} is not following you `}</div> */}
-      </div>
-      <div className="section-container">
-        <h2 className="section-title">Channels you're both in</h2>
-        <div className='channel-container'>
-            {commonChannels.map(channel => (
-            <a href={channel.url} className='channel-item' key={channel.name} style={{ textDecoration: 'none', color: 'inherit' }}>
-        
-                <span className='channel-name'>{channel.name}</span>
-                <img className='channel-pic' src={channel.imageUrl} alt={channel.name} />
-            </a>
-            ))}
+        <div className="section-container">
+          <h2 className="section-title">Channels you're both in</h2>
+          <div className='channel-container'>
+              {commonChannels.map(channel => (
+              <a href={channel.url} className='channel-item' key={channel.name} style={{ textDecoration: 'none', color: 'inherit' }}>
+          
+                  <span className='channel-name'>{channel.name}</span>
+                  <img className='channel-pic' src={channel.imageUrl} alt={channel.name} />
+              </a>
+              ))}
+          </div>
+        </div>
+        <div className="section-container">
+          <h2 className="section-title">People you both follow</h2>
+          <div className='channel-container'>
+              {commonFollowing.map(profile => (
+              <a href={'https://warpcast.com/'+profile.name} className='channel-item' key={profile.name} style={{ textDecoration: 'none', color: 'inherit' }}>
+                  <span className='channel-name'>{profile.name}</span>
+                  <img className='channel-pic' src={profile.image} alt={profile.name} />
+              </a>
+              ))}
+          </div>
+        </div>
+        <div className="section-container">
+          <h2 className="section-title">{theirUsername} casts you liked</h2>
+          <div className="cast-embed-container">
+              {yourLikedCasts.map(cast => (
+              <div className='cast-embed-item'>
+                  <FarcasterEmbed className='cast-embed' url={cast}/>
+              </div>
+              ))}
+          </div>
+        </div>
+        <div className="section-container">
+          <h2 className="section-title">Your casts {theirUsername} has liked</h2>
+          <div className="cast-embed-container">
+              {theirLikedCasts.map(cast => (
+              <div className='cast-embed-item'>
+                  <FarcasterEmbed className='cast-embed' url={cast}/>
+              </div>
+              ))}
+          </div>
+        </div>    
         </div>
       </div>
-      <div className="section-container">
-        <h2 className="section-title">People you both follow</h2>
-        <div className='channel-container'>
-            {commonFollowing.map(profile => (
-            <a href={'https://warpcast.com/'+profile.name} className='channel-item' key={profile.name} style={{ textDecoration: 'none', color: 'inherit' }}>
-                <span className='channel-name'>{profile.name}</span>
-                <img className='channel-pic' src={profile.image} alt={profile.name} />
-            </a>
-            ))}
-        </div>
-      </div>
-      <div className="section-container">
-        <h2 className="section-title">{theirUsername} casts you liked</h2>
-        <div className="cast-embed-container">
-            {yourLikedCasts.map(cast => (
-            <div className='cast-embed-item'>
-                <FarcasterEmbed className='cast-embed' url={cast}/>
-            </div>
-            ))}
-        </div>
-      </div>
-      <div className="section-container">
-        <h2 className="section-title">Your casts {theirUsername} has liked</h2>
-        <div className="cast-embed-container">
-            {theirLikedCasts.map(cast => (
-            <div className='cast-embed-item'>
-                <FarcasterEmbed className='cast-embed' url={cast}/>
-            </div>
-            ))}
-        </div>
-      </div>    
-      </div>
-    </div>
+    </Suspense>
   );
 }
 
 function ProfileDataError(){
     return (
-        <div className='summary-error'>
-            <h1>Please enter valid usernames to see a profile</h1>
-            <button onClick={() => window.location.href = '/'} style={{ padding: '10px 20px', fontSize: '16px', cursor: 'pointer', backgroundColor: '#403a47', color: 'white', border: 'none', borderRadius: '5px', marginTop: '20px' }}>
-                Enter Usernames
-            </button>
-        </div>
+        <Suspense>
+          <div className='summary-error'>
+              <h1>Please enter valid usernames to see a profile</h1>
+              <button onClick={() => window.location.href = '/'} style={{ padding: '10px 20px', fontSize: '16px', cursor: 'pointer', backgroundColor: '#403a47', color: 'white', border: 'none', borderRadius: '5px', marginTop: '20px' }}>
+                  Enter Usernames
+              </button>
+          </div>
+        </Suspense>
     )
 }
 
