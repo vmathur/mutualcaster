@@ -30,7 +30,7 @@ function Home() {
             placeholder="Their Username"
           />
         </div>
-        <button className='home-button' type="submit" onClick={()=>router.push(`/profile?username1=${yourUsername}&username2=${theirUsername}`)}>Go</button>
+        <button className='home-button' type="submit" onClick={()=>router.push(`/profile?username1=${yourUsername.toLowerCase()}&username2=${theirUsername.toLowerCase()}`)}>Go</button>
       </div>
     </div>
   );
