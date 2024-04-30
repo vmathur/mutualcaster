@@ -83,6 +83,19 @@
     margin-left: 10px; /* Adds space between the image and the text */
 }
 
+.farcaster-embed-author{
+    justify-self: left;
+    text-align: left;
+}
+
+.farcaster-embed-body{
+    text-align: left;
+}
+
+.farcaster-embed-channel{
+    display: flex !important;
+}
+
 .farcaster-embed-container {
     border-radius: 10px;
     color: white;
