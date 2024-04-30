@@ -15,8 +15,8 @@ function Profile() {
   const theirUsername = searchParams.get('username2');
 
   const [isValidUsers, setIsValidUsers] = useState(false);
-  const [ yourProfilePic, setYourProfilePic] = useState('3');
-  const [ theirProfilePic, setTheirProfilePic] = useState('2');
+  const [ yourProfilePic, setYourProfilePic] = useState('');
+  const [ theirProfilePic, setTheirProfilePic] = useState('');
   const [ followingSince1, setFollowingSince1] = useState(false);
   const [ followingSince2, setFollowingSince2] = useState(false);
   const [ commonFollowing, setCommonFollowing] = useState([]);
@@ -24,7 +24,14 @@ function Profile() {
   const [ yourLikedCasts, setYourLikedCasts] = useState([]);
   const [ theirLikedCasts, setTheirLikedCasts] = useState([]);
 
-  const [isLoading, setIsLoading] = useState(true);
+  const [loadingStates, setLoadingStates] = useState({
+    validateUsers: false,
+    profilePictures: false,
+    mutualFollowing: false,
+    commonChannels: false,
+    likedCasts: false,
+    commonFollowing: false
+  });
 
   useEffect(() => {
     if(yourUsername && theirUsername){
@@ -40,6 +47,7 @@ function Profile() {
   }, [isValidUsers]);
 
   const validateUsers = async () => {
+    setLoadingStates(prev => ({ ...prev, validateUsers: true }));
     const response = await fetch(BASE_URL+'/api/validate-users', {
       method: 'POST',
       headers: {
@@ -50,10 +58,11 @@ function Profile() {
     const data = await response.json();
     console.log(data)
     setIsValidUsers(data.valid)
-    setIsLoading(false)
+    setLoadingStates(prev => ({ ...prev, validateUsers: false }));
   }
 
   const getProfilePictures = async () => {
+    setLoadingStates(prev => ({ ...prev, profilePictures: true }));
     const response = await fetch(BASE_URL+'/api/profile-pictures', {
         method: 'POST',
         headers: {
@@ -64,9 +73,11 @@ function Profile() {
       const data = await response.json();
       setYourProfilePic(data.username1)
       setTheirProfilePic(data.username2)
+      setLoadingStates(prev => ({ ...prev, profilePictures: false }));
   }
 
   const getMutualFollowing = async () => {
+    setLoadingStates(prev => ({ ...prev, mutualFollowing: true }));
     const response = await fetch(BASE_URL+'/api/mutual-following', {
         method: 'POST',
         headers: {
@@ -78,10 +89,12 @@ function Profile() {
       console.log(data)
       setFollowingSince1(data.username1);
       setFollowingSince2(data.username2);
+      setLoadingStates(prev => ({ ...prev, mutualFollowing: false }));
       //
   }
 
   const getCommonChannels = async () => {
+    setLoadingStates(prev => ({ ...prev, commonChannels: true }));
     const response = await fetch(BASE_URL+'/api/common-channels', {
         method: 'POST',
         headers: {
@@ -92,10 +105,12 @@ function Profile() {
       const data = await response.json();
       console.log(data)
       setCommonChannels(data)
+      setLoadingStates(prev => ({ ...prev, commonChannels: false }));
       //
   }
 
   const getLikes = async () => {
+    setLoadingStates(prev => ({ ...prev, likedCasts: true }));
     const response = await fetch(BASE_URL+'/api/liked-casts', {
         method: 'POST',
         headers: {
@@ -107,10 +122,11 @@ function Profile() {
       console.log(data); // handle response
       setYourLikedCasts(data.username1)
       setTheirLikedCasts(data.username2)
-      //
+      setLoadingStates(prev => ({ ...prev, likedCasts: false }));
   }
 
   const getCommonFollowing = async () => {
+    setLoadingStates(prev => ({ ...prev, commonFollowing: true }));
     const response = await fetch(BASE_URL+'/api/common-following', {
       method: 'POST',
       headers: {
@@ -120,7 +136,7 @@ function Profile() {
     });
     const data = await response.json();
     setCommonFollowing(data)
-    // console.log(data); // You can handle the response data as needed
+    setLoadingStates(prev => ({ ...prev, commonFollowing: false }));
   }
 
   const formatTime = (timeStamp) => {
@@ -135,7 +151,7 @@ function Profile() {
     return ProfileDataError();
   }
   
-  if(isLoading){
+  if(loadingStates.validateUsers){
     return <div className='summary-error'>
       <div style={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
         <h1>Loading...</h1>
@@ -155,19 +171,18 @@ function Profile() {
       <div className='summary'>
         <div className="section-container">
           <div className='profile-pic-container'>
-              <img className='profile-pic your-pic' src={yourProfilePic} alt="Your Profile" />
-              <img className='profile-pic their-pic' src={theirProfilePic} alt="Their Profile" />
+              {!loadingStates.profilePictures ? <a className='your-pic' href={'https://warpcast.com/'+theirUsername}><img className='profile-pic' src={yourProfilePic} alt="Your Profile" /></a> : null}
+              {!loadingStates.profilePictures ? <a className='their-pic' href={'https://warpcast.com/'+yourUsername}><img className='profile-pic' src={theirProfilePic} alt="Their Profile" /></a> : null}
           </div>
           <h1 className="names">{theirUsername} and you</h1>
-          <div className="following-since">{followingSince1 ? 'Following since ' + formatTime(followingSince1) : 'Not following'}</div>
-          {/* <div className="following-since">{followingSince2 ? `${theirUsername} following you since ` + formatTime(followingSince2) : `${theirUsername} is not following you `}</div> */}
+          {!loadingStates.mutualFollowing ? <div className="following-since">{followingSince1 ? 'Following since ' + formatTime(followingSince1) : 'Not following'}</div> : 'Loading'}
+          {/* {loadingStates.mutualFollowing ? <div className="following-since">{followingSince2 ? `${theirUsername} following you since ` + formatTime(followingSince2) : `${theirUsername} is not following you `}</div> : null} */}
         </div>
         <div className="section-container">
           <h2 className="section-title">Channels you're both in</h2>
           <div className='channel-container'>
-              {commonChannels.map(channel => (
+              {commonChannels.length>0 && commonChannels.map(channel => (
               <a href={channel.url} className='channel-item' key={channel.name} style={{ textDecoration: 'none', color: 'inherit' }}>
-          
                   <span className='channel-name'>{channel.name}</span>
                   <img className='channel-pic' src={channel.imageUrl} alt={channel.name} />
               </a>
