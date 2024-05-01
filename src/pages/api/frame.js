@@ -12,7 +12,7 @@ export default async function handler (req,res){
     }
     const signedMessage = req.body;
     let fid = signedMessage.untrustedData.fid
-    let submittedUsername = signedMessage.untrustedData.inputText
+    let submittedUsername = signedMessage.untrustedData.inputText.toLowerCase();
     let username = await getFarcasterUsername(fid);
     let url = BASE_URL+`/profile?username1=${username}&username2=${submittedUsername}`;
     let html = generateFrame(url);
