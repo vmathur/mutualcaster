@@ -1,7 +1,7 @@
 import Head from 'next/head';
 
 export default function Frame() {
-    let BASE_URL = process.env.NEXT_PUBLIC_BASE_URL
+    let BASE_URL = process.env.NEXT_PUBLIC_API_URL
     // let BASE_URL = 'https://60f5-97-126-133-99.ngrok-free.app'
 
     return (
