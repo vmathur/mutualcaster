@@ -13,7 +13,7 @@ function Home() {
   return (
     <div className="App">
       <div className="home-container">
-        <h2 className="headline-text">See what you have in common with other Farcaster users</h2>
+        <h3 className="headline-text">See what you have in common with other Farcaster users</h3>
         <div className='input-field'>
           <input
             type="text"
