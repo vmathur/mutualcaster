@@ -29,7 +29,6 @@ export default async function handler (req,res){
   }
   
 
-  https://warpcast.com/~/add-cast-action?url=https://2df8-172-56-108-162.ngrok-free.app/api/action-get
   async function getFarcasterUsername(fid){
     const query = `{
       Socials(

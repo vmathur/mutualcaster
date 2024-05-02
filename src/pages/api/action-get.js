@@ -3,6 +3,9 @@ import { init, fetchQuery } from "@airstack/node";
 const AIRSTACK_KEY = process.env.AIRSTACK_KEY;
 init(AIRSTACK_KEY);
 
+//https://warpcast.com/~/add-cast-action?url=https://mutualcaster.vercel.app/api/action-get
+
+
 export default async function handler (req,res){
     if (req.method === 'GET') {
       let metadata = {
